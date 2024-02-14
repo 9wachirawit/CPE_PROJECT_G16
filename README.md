@@ -19,5 +19,6 @@ CPE66-PROJECT-G16.
 .\
 .\
 /* INPUT LINKER  ALL */ $(CoreLibraryDependencies);%(AdditionalDependencies);<different options>;sfml-system.lib;sfml-window.lib;sfml-network.lib;sfml-graphics.lib
+.\
 /* INPUT LINKER  DEBUG */ $(CoreLibraryDependencies);%(AdditionalDependencies);<different options>;sfml-system-d.lib;sfml-window-d.lib;sfml-network-d.lib;sfml-graphics-d.lib
 ___________________________________________________
