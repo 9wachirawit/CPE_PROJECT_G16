@@ -1,3 +1,5 @@
+//download images folder first (i've sent it in github)
+
 #include<SFML/Graphics.hpp>
 #include <time.h>
 using namespace sf;
