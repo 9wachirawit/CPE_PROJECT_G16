@@ -4,12 +4,12 @@
 #include <time.h>
 using namespace sf;
 
-struct Point { 
-    int x; 
-    int y; 
+struct Point {
+    int x;
+    int y;
 } a[4] = { {1,0},{1,1},{1,2},{1,3} }, copi_a[4];
 
-Point form[7][4] = {
+Point form[10][4] = {
  {{1,0},{1,1},{1,2},{1,3}},// I
  {{0,1},{1,1},{1,2},{2,2}},
  {{0,1},{1,1},{2,1},{1,2}},
@@ -19,8 +19,8 @@ Point form[7][4] = {
  {{1,0},{1,1},{1,2},{2,0}} // z
 };
 
-const int L = 20;
-const int C = 10;
+const int L = 20; //length in y axis
+const int C = 10; //length in x axis
 
 int Tab[L][C] = { 0 };
 
@@ -39,10 +39,10 @@ int main()
 {
     srand(time(0));
     int dx = 0;
-    bool Rt = false;
+    bool Rt = false; //0 = can't rotate, 1 = can rotate
     float timer = 0, delay = 0.5;
 
-    RenderWindow window(VideoMode(400, 600), "Isus Ku Tor");
+    RenderWindow window(VideoMode(400, 600), "GameName");
     Texture t, t1;
     t1.loadFromFile("images/BackG.png");
     t.loadFromFile("images/tiles.png");
@@ -79,7 +79,7 @@ int main()
             for (int i = 0; i < 4; i++)
                 a[i] = copi_a[i];
         }
-        //------------rotaion---------
+        //------------rotation---------
         if (Rt)
         {
             Point pt = a[1];
@@ -121,7 +121,7 @@ int main()
 
             timer = 0;
         }
-        //---------Verifier ligne----------
+        //---------Check lines---------- (remove line when filled?)
         int max = L - 1;
         for (int i = L - 1; i > 0; i--)
         {
