@@ -5,7 +5,7 @@
 #include <conio.h>
 using namespace std;
 
-const int width = 150, height = 35;
+const int width = 100, height = 24;
 int screen[width][width] = {};
 
 void drawBlock(int x, int y, int color) {
@@ -13,7 +13,7 @@ void drawBlock(int x, int y, int color) {
     SetConsoleTextAttribute(hConsole, color);
     COORD pos = {x * 2, y};
     SetConsoleCursorPosition(hConsole, pos);
-    cout << "�";
+    cout << " ";
 }
 
 int drawField(string a) {
@@ -29,6 +29,24 @@ int drawField(string a) {
         cout << endl;
     }
 }
+
+int keyboard(char key,string & A){
+	if (key == 'A' || key == 'a') {
+                A = "+";
+            }
+        else if(key == 'D' || key == 'd'){
+        	A = "-";
+				}
+			else if(key == 'W' || key == 'w'){
+			A = "o";
+					}
+				else if(key == 'S' || key == 's'){
+			A = "1";
+						}
+	}
+            
+            
+	
 
 
 /* inprogress
@@ -50,26 +68,18 @@ int findhistory(string tag){
 */
 
 
-int main(void) {
-	//ios_base::sync_with_stdio(false); speed  up
+int main() {
+	ios_base::sync_with_stdio(false);
 	string a = ".";
 	int j = 0;
 	while (j == 0) { 
-
         drawField(a);
-        Sleep(1000); // Delay 500 milliseconds
+        Sleep(50); // Delay 500 milliseconds
     	if (_kbhit()) {
             char key = _getch();
-            if (key == 'A' || key == 'a') {
-                if(a == "-"){
-                	a = ".";
-				}
-				else{
-					a = "-";
-				}
-            }
-
-    }
+            keyboard(key,a);
+    					}
+    
 
     }
 
