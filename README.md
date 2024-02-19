@@ -8,7 +8,7 @@ CPE66-PROJECT-G16.
 | 2. | 660612150  | บุรัสกร ศรีขาว  | buratsakon_s@cmu.ac.th |
 | 3. | 660612142  | ชวิน เกตุภาค  | kangchawin@gmail.com |
 | 4. | 660612152  | ปิยวัฒน์ เครือประเสริฐ  | piyawat.22107@gmail.com  |
-| 5. | -  | -  | -  |
+| 5. | 660612162 | อภิชา เลิศจินตนากิจ  | bomber36016@outlook.co.th |
 
 ## description.
 .\
