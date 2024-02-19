@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "CPE_PROJECT_G16",
+			"path": "."
+		},
+		{
+			"name": "save",
+			"path": "../../../pototype/save"
+		}
+	],
+	"settings": {}
+}
