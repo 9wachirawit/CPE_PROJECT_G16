@@ -1,0 +1,152 @@
+#include <iostream>
+#include <windows.h>
+
+using namespace std;
+ 
+int main()
+{
+    // playfield is 15x10
+    bool playfield[150] = {};
+    // 4 blocks in 4 orientations, encoded as binary 3x3 maps (9 bits)
+    int figures[16] = {56, 146, 56, 146, 58, 178, 184, 154, 312, 210, 57, 150, 27, 27, 27, 27}; 
+    // So for example L-block is 010 010 110 = 150
+    // block position (1 row=10)
+    int offset = 1;
+    // flag: game is running?
+    bool running = true;
+    int time = 0;
+    int key_delay = 0;
+    int points = 0;
+    // increased block speed flag
+    bool increased_speed = false;
+    // block orientation
+    int direction = 0;
+    // block type
+    int figure_number = 0;
+    bool collision = false;
+    int new_position[2] = {}; // new position after applying controls, to test if input will cause a collision
+    COORD coords = {0, 0};    // for setting console pos. to beginning
+ 
+    for (int i = 0; i < 150; i++)
+    {
+        playfield[i] = (i % 10 == 0 || i % 10 == 8 || i > 140); // draw the edge around playfield
+    }
+ 
+    while (running) // main loop
+    { 
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coords);
+        cout << "points:" << points << "     " << '\n'; // set to 0,0 , output points
+        time++;
+        offset += 10 * (time % (10 - 9 * increased_speed) == 0);
+        if (key_delay > 0)
+        {
+            key_delay--; // advance time, move block down, reduce key delay (key_delay)
+        }
+ 
+        collision = false; // no collision?
+        for (int i = 0; i < 9; i++)
+        {
+            collision += playfield[offset + i % 3 + i / 3 * 10 + 10] * ((figures[figure_number * 4 + direction] & 1 << i) > 0); // collision>0 when there is something below active block
+            playfield[offset + i % 3 + i / 3 * 10] += ((figures[figure_number * 4 + direction] & 1 << i) > 0);                  // draw the block
+        }
+        for (int i = 0; i < 150; i++)
+        {
+            cout << (char)(32 + 3 * playfield[i] - 22 * (i % 10 == 9)); // draw the play field: 32(space) or 35(#) or 10(newline)
+        }
+        if (!collision)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                playfield[offset + i % 3 + i / 3 * 10] -= ((figures[figure_number * 4 + direction] & 1 << i) > 0); // there was no collision?
+            }
+        }
+        else // If so, erase the block, it will be drawn lower in next loop
+        {
+            // collision happened? put the block and create a new one. We are at the top? Game over.
+            if (offset < 10) 
+            {
+                running = false;
+            }
+            offset = 1;
+            figure_number = rand() % 4;
+            direction = 0;
+            increased_speed = false;
+        } 
+ 
+        Sleep(50); // bad way of regulating speed
+        new_position[0] = offset;
+        new_position[1] = direction; // save the position and angle of the block
+        if ((GetKeyState(VK_ESCAPE) & 0x8000))
+        {
+            running = false;
+        }
+        if ((GetKeyState(VK_RIGHT) & 0x8000) && (offset % 10 < 6)) // right
+        {
+            offset++;
+        }
+        if ((GetKeyState(VK_LEFT) & 0x8000) && (offset % 10 > 0)) // left
+        {
+            offset--;
+        }
+        if ((GetKeyState(VK_DOWN) & 0x8000)) // down - speedup
+        {
+            increased_speed = true;
+        }
+        else
+        {
+            increased_speed = false;
+        }
+        if ((GetKeyState(VK_UP) & 0x8000) && key_delay == 0) // up - rotation
+        {
+            direction = (direction + 1) % 4;
+            key_delay = 4;
+        }
+ 
+ 
+        collision = false;
+        for (int i = 0; i < 9; i++)
+        {
+            if (playfield[offset + i % 3 + i / 3 * 10] + ((figures[figure_number * 4 + direction] & 1 << i) > 0) > 1)
+            {
+                collision = true; // controls cause the block to collide with something?
+            }
+        }
+ 
+        if (collision) // collision happened - reset position and angle (e.g. move was impossible)
+        {
+            offset = new_position[0];
+            direction = new_position[1];
+        }
+ 
+        for (int j = 0; j < 14; j++) // go through field rows
+        {
+            collision = true;
+            for (int i = 1; i < 8; i++)
+            {
+                if (playfield[i + j * 10] == 0)
+                {
+                    collision = false; // test if we have a whole line
+                }
+            }
+ 
+            if (collision) // whole line? remove blocks, add points...
+            {
+                for (int i = 1; i < 8; i++)
+                {
+                    playfield[i + j * 10] = 0;
+                }
+ 
+                points++;
+ 
+                for (int j2 = j; j2 > 0; j2--)
+                {
+                    for (int i = 1; i < 8; i++) //...and move everything above line one block down
+                    {
+                        playfield[i + j2 * 10] = playfield[i + j2 * 10 - 10];
+                    }
+                }
+            }
+        }
+        // end of main loop
+    }
+}
