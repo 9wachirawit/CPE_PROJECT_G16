@@ -11,69 +11,62 @@ using namespace std;
 	vector<string> names;
     vector<int> scores;
 
-
-//sceen saving
+//sceen;
 const int width = 100, height = 26;
-int screen[height][width] = {};
-string A = "o";
-/*
-void buildscene(int (&x)[height][width], int width, int height) {
-    for(int i = 0; i < height; i++) {
-        for(int j = 0; j < width; j++) {
-            if (((i==1) and (j >= 25) and (j <= 74) and (j != 37) and (j != 38) and (j != 51) and (j != 52)) or ((i==22) and (j >= 25) and (j <= 74) and (j != 37) and (j != 38) and (j != 51) and (j != 52)) or ((i==24) and (j >= 25) and (j <= 74)) or ((j==25) and (i >= 1) and (i <= 22)) or ((j==74) and (i >= 1) and (i <= 22)) or ((j==36) and (i >= 1) and (i <= 22)) or ((j==39) and (i >= 1) and (i <= 22)) or ((j==50) and (i >= 1) and (i <= 22)) or ((j==53) and (i >= 1) and (i <= 22))) {
-                x[i][j] = 1;
-            } else {
-                x[i][j] = 0;
-            }
-        }
+char screen[height][width] = {};
+//string A = "o";
+
+void buildscene(char( & x)[height][width], int width, int height) {
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      if ((((i == 1) or(i == 22)) and(j >= 25)) and((j != 37) and(j != 38) and(j != 51) and(j != 52) and(j <= 94)) or(((i >= 2) and(i <= 21)) and((j == 25) or(j == 36) or(j == 39) or(j == 50) or(j == 53) or(j == 94)))) {
+        x[i][j] = '#';
+      } else {
+        x[i][j] = ' ';
+      }
     }
-}*/
+  }
+}
 
 //kaizer j
-/*void monsterspawn(int (&x)[height][width], int width, int height){
+void monsterspawn(char (&x)[height][width], int width, int height){
 	for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
     
         }
     }
-}*/
+}
 
 //read_and_show_scene inprogress 
-/*
-int drawField(int (&screen)[height][width], int width, int height) {
-	buildscene(screen, width, height);
+
+int drawField(char (&screen)[height][width], int width, int height) {
 	system("cls");
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-                if(screen[y][x] == 0){
-                	cout << " ";
-				} else {
-                	cout << A;
-				}
+                cout << screen[y][x];
         }
         cout << endl;
-    
     }
-}*/
+}
 
 
 //keyboard system inprogress 
 int keyboard(char key,string &A){
 	if (key == 'A' || key == 'a') {
-                A = "<";
+           //     A = "<";
             }
         else if(key == 'D' || key == 'd'){
-        	A = "O";
+        //	A = "O";
 				}
 			else if(key == 'W' || key == 'w'){
-			A = "^";
+		//	A = "^";
 					}
 				else if(key == 'S' || key == 's'){
-			A = "o";
+		//	A = "o";
 						}
 	}
             
-//bomb 
+
 int readscore(){
 		ifstream dest;
 	dest.open("score.txt"); 
@@ -121,18 +114,17 @@ int findscore_edit(string myname,int myscore){
 	scores.clear();
 }
 
-//bomb 
 
 
 int main() {
-
+	buildscene(screen, width, height);
     ios_base::sync_with_stdio(false);
     while (true) {
-        //drawField(screen, width, height);
+        drawField(screen, width, height);
         Sleep(50);
         if (_kbhit()) {
             char key = _getch();
-            keyboard(key,A);
+            //keyboard(key,A);
     					}
     }
     return 0;
