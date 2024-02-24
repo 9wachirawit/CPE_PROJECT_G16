@@ -3,13 +3,20 @@
 #include <fstream>
 #include <stdio.h>
 #include <conio.h>
+#include <cstdlib>
+#include <vector>
 using namespace std;
 
+//score save;
+	vector<string> names;
+    vector<int> scores;
+
+
+//sceen saving
 const int width = 100, height = 26;
 int screen[height][width] = {};
 string A = "o";
-
-//Zaoshang hao zhongguó xiànzài wo you bingqílín wo hen xihuan bingqílín
+/*
 void buildscene(int (&x)[height][width], int width, int height) {
     for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
@@ -20,9 +27,9 @@ void buildscene(int (&x)[height][width], int width, int height) {
             }
         }
     }
-}
+}*/
 
-//kaizer job
+//kaizer j
 /*void monsterspawn(int (&x)[height][width], int width, int height){
 	for(int i = 0; i < height; i++) {
         for(int j = 0; j < width; j++) {
@@ -32,6 +39,7 @@ void buildscene(int (&x)[height][width], int width, int height) {
 }*/
 
 //read_and_show_scene inprogress 
+/*
 int drawField(int (&screen)[height][width], int width, int height) {
 	buildscene(screen, width, height);
 	system("cls");
@@ -46,7 +54,7 @@ int drawField(int (&screen)[height][width], int width, int height) {
         cout << endl;
     
     }
-}
+}*/
 
 
 //keyboard system inprogress 
@@ -65,31 +73,60 @@ int keyboard(char key,string &A){
 						}
 	}
             
-            
-//filesystem_inprogress kaizer job
-int findhistory(string tag){
-	ifstream tagfinder;
-	tagfinder.open("save\\saveid.txt"); 
-	ofstream tagEdit("save\\saveid.txt",ios::app);
-	string tagcheck;
-	int i = 0;
-	while (getline(tagfinder, tagcheck))
+//bomb 
+int readscore(){
+		ifstream dest;
+	dest.open("score.txt"); 
+	string text0;
+	while (getline(dest,text0))
 	{
-		if(tag == tagcheck){
-			return i;
-		}
-		i += 1 ;
+		const char * text1 = text0.c_str();
+		char format[] = "%[^:]: %d";
+		char name[100];
+		int score;
+		sscanf(text1,format,name,&score);
+			names.push_back(name);
+			scores.push_back(score);
+			//cout << name <<" "<<score<<endl;
 	}
-	return -1;
+	dest.close();
 }
 
+
+int findscore_edit(string myname,int myscore){
+    names.push_back(myname);
+	scores.push_back(myscore);
+	readscore();
+	for (int i = 0; i < 10 - 1; ++i) {
+        for (int j = 0; j < 10 - i - 1; ++j) {
+            if (scores[j] < scores[j + 1]) {
+                int temp = scores[j];
+                string temps = names[j];
+                
+                names[j] = names[j + 1];
+                names[j + 1] = temps;
+                
+                scores[j] = scores[j + 1];
+                scores[j + 1] = temp;
+            }
+        }
+    }
+    ofstream textEdit("score.txt");
+    for (int i = 0; i < 10;i++){
+    //	cout << names[i] << " " <<scores[i]<<endl;
+    	textEdit << names[i]<<":"<<scores[i]<<"\n";
+	}
+	textEdit.close();
+}
+
+//bomb 
 
 
 int main() {
 
     ios_base::sync_with_stdio(false);
     while (true) {
-        drawField(screen, width, height);
+        //drawField(screen, width, height);
         Sleep(50);
         if (_kbhit()) {
             char key = _getch();
