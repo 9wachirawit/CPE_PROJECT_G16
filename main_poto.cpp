@@ -117,6 +117,8 @@ int findscore_edit(string myname,int myscore){
     	textEdit << names[i]<<":"<<scores[i]<<"\n";
 	}
 	textEdit.close();
+	names.clear();
+	scores.clear();
 }
 
 //bomb 
