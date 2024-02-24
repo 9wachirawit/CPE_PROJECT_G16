@@ -34,7 +34,7 @@ void buildscene(int (&x)[height][width], int width, int height) {
 //read_and_show_scene inprogress 
 int drawField(int (&screen)[height][width], int width, int height) {
 	buildscene(screen, width, height);
-    system("cls");
+	system("cls");
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
                 if(screen[y][x] == 0){
@@ -44,6 +44,7 @@ int drawField(int (&screen)[height][width], int width, int height) {
 				}
         }
         cout << endl;
+    
     }
 }
 
@@ -54,7 +55,7 @@ int keyboard(char key,string &A){
                 A = "<";
             }
         else if(key == 'D' || key == 'd'){
-        	A = ">";
+        	A = "O";
 				}
 			else if(key == 'W' || key == 'w'){
 			A = "^";
@@ -85,6 +86,7 @@ int findhistory(string tag){
 
 
 int main() {
+
     ios_base::sync_with_stdio(false);
     while (true) {
         drawField(screen, width, height);
