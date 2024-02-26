@@ -86,10 +86,25 @@ int readscore(){
 			//cout << name <<" "<<score<<endl;
 	}
 	dest.close();
+}                                                                                                                                                                                                                                                                                                                                                                                             
+bool checkName(string name){
+   
+    readscore();
+    for(int i = 0; i < name.size(); ++i){
+       if (names[i] != name){
+        return true;  
+       }
+    }
+    return false; 
 }
 
 
 int findscore_edit(string myname,int myscore){
+    if(checkName(myname)) {   
+      cout << "Name " << myname << "  This name has already been used:";     
+      cin >> myname;
+    }
+
     names.push_back(myname);
 	scores.push_back(myscore);
 	readscore();
@@ -116,6 +131,7 @@ int findscore_edit(string myname,int myscore){
 	names.clear();
 	scores.clear();
 }
+
 
 
 
