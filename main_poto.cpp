@@ -5,6 +5,8 @@
 #include <conio.h>
 #include <cstdlib>
 #include <vector>
+#include <unistd.h> 
+
 using namespace std;
 
 //score save;
@@ -43,10 +45,11 @@ int drawField(char (&screen)[height][width], int width, int height) {
 	system("cls");
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-                cout << screen[y][x];
+                printf("%c",screen[y][x]);
         }
-        cout << endl;
+        printf("\n");
     }
+     printf("                         HP :");
 }
 
 
@@ -117,11 +120,11 @@ int findscore_edit(string myname,int myscore){
 
 
 int main() {
+	fflush(stdout);
 	buildscene(screen, width, height);
-    ios_base::sync_with_stdio(false);
     while (true) {
-        drawField(screen, width, height);
-        Sleep(50);
+    	drawField(screen, width, height);
+       	sleep(50);
         if (_kbhit()) {
             char key = _getch();
             //keyboard(key,A);
