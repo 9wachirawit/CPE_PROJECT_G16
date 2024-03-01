@@ -3,8 +3,8 @@
 #include <algorithm>
 using namespace std;
 
-void title(){
-    cout << R"(
+const char* title() {
+    return R"(
   o8=========================================================================8o
      
                  ______    ___  ____  ______  ____   ____ _____   
@@ -22,16 +22,15 @@ void title(){
 
      By PuenMaiK(r)ob
   o8=========================================================================8o
-	)"<< "\n";
+    )";
 }
 
 // menu() contains the on-screen display for the main menu options
-void menu(){
-    cout << R"(
+const char* menu() {
+    return R"(
         o8=============8o       o8=============8o       o8=============8o          
          |     PLAY    |         | LEADERBOARD |         |     EXIT    |
          | [press 'A'] |         | [press 'B'] |         | [press 'E'] |          
         o8=============8o       o8=============8o       o8=============8o
-
-	)" << "\n";
+    )";
 }

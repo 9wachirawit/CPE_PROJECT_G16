@@ -9,7 +9,7 @@ enum playerNumber {Tul, Jao9, Uro, Keng, Bomb, TOTALPLAYERS};
 int score[5] = { 0,0,0,0,0 };
 string playerNames[5]{ "Tul","Jao9","Uro","Keng","Bomb" };
 
-int main()
+int l_board()
 {
 	for (int i = 0; i <= TOTALPLAYERS -1; i++)
 	{
