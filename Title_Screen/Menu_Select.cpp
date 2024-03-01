@@ -1,114 +1,73 @@
-#include<iostream>
-#include<string>
-#include<ctime>
-#include<cstdlib>
-#include<conio.h>
-#include<windows.h>
-using namespace std; 
+#include <iostream>
+#include <string>
+#include <ctime>
+#include <cstdlib>
+#include <conio.h>
+#include <windows.h>
+#include "Asset.cpp"
+#include "Leaderboard.cpp"
 
-// make it int function to return get() to 0;
-int menu();
+using namespace std;
+
+int title_screen();
 int playground();
-int score();
+int leaderboard();
 
-//toupper(key) change key form lower to upper
-
-/*Get "key" that is char-type fromkeyboard*/
-void getcommand(char &skey){
-    cout << "\n\ninput command : ";
-    const char key = getch();
-    skey = key;
+// Get key from keyboard
+char getcommand() {
+    return toupper(getch());
 }
 
+void close() {
+    cout << "Invalid command.\n";
+    Sleep(1500);
+}
 
-int main(){
+int title_screen() {
+    while (true) {
+        system("cls");
+        cout << title();
+        cout << menu();
+        char key = getcommand();
+        switch (key) {
+            case 'E':
+                return 0;
+            case 'A':
+                playground();
+                break;
+            case 'B':
+                leaderboard();
+                break;
+            default:
+                close();
+                break;
+        }
+    }
+}
+
+int leaderboard() {
+    while (true) {
+        system("cls");
+        l_board();
+        cout << "\n( Return to menu: E )";
+        char key = getcommand();
+        if (key == 'E') return 0;
+        else close();
+    }
+}
+
+int playground() {
+    while (true) {
+        system("cls");
+        cout << "\n( Return to menu: E )";
+        char key = getcommand();
+        if (key == 'E') return 0;
+        else close();
+    }
+}
+
+int main() {
     srand(time(0));
-    
-    menu();
-
- return 0;
-}
-
-// s press
-int score(){
-
-    do{
-    system("cls");
-    char key;
-    cout << "//show all score " << " Wow " << " nice score!";
-    cout << "\nplease input command : ";
-    cout << "\nReturn to menu: E" << "     " << "Play : A";
-    getcommand(key);
-    key = toupper(key);
-    // r press to return menu
-    if(key == 'E'){ return menu();}
-    else if(key == 'A') { return playground();}
-    else{
-            cout << "Invalid command.\n";
-            /*delay cout for 1.5 second*/
-            Sleep(1500);
-            cout << "\nPress anykey to continue.";
-
-            if(cin.get())
-            /*Clear console*/
-            system("cls");
-        }
-    }while(true);
-}
-
-// p press 
-int playground(){
-
-    do{
-    system("cls");
-    char key;
-    cout << "nice bro " << " wanna see the score?";
-    cout << "\nplease input command : ";
-    cout << "\nReturn to menu: E" << "     " << "Score : B";
-    getcommand(key);
-    key = toupper(key);
-    // r press to return to menu
-    if(key == 'E'){ return menu();}
-    else if(key == 'B') { return score();}
-    else{
-            cout << "Invalid command.\n";
-            /*delay cout for 1.5 second*/
-            Sleep(1500);
-            cout << "\nPress anykey to continue.";
-
-            if(cin.get())
-            /*Clear console*/
-            system("cls");
-        }
-    }while(true);
-}
-
-// menu interactive
-int menu(){
-    // bornot check if there are exit to be break or not
-    bool bornot = true;
-
-    do{
-    system("cls");
-    char key;
-    cout << "Please input command\n";
-    cout << "Play : A" << " " << "Scores : B" << " " << "Exit : E";
-    getcommand(key);
-    key = toupper(key);
-    if(key == 'E') { bornot = false; }
-    else if(key == 'A'){ return playground();}
-    else if(key == 'B'){ return score();}
-    else{
-            cout << "Invalid command.\n";
-            /*delay cout for 1.5 second*/
-            Sleep(1500);
-            cout << "\nPress anykey to continue.";
-
-            if(cin.get())
-            /*Clear console*/
-            system("cls");
-        }    
-    }while(bornot);
-    system("cls");
-return 0;
+    title_screen();
+    return 0;
 }
