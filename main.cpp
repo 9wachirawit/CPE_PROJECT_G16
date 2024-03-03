@@ -10,16 +10,16 @@
 using namespace std;
 
 
-int Block = rand() % 7;	//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6) rand() % 7
-int rotate = 0; // 0 90 180 270 : 0 1 2 3
-int posX = 41 + (rand() % 8);	// current x position 39 - 48 :: 40 - 47
-int posY = 4;	// current y position
-int Mmax;		// max move x
-int Mmin;		// min move -x
-int cd = 0;	    // block can drop? 0 1
+int Block = rand() % 7;									//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6) rand() % 7
+int rotate = 0; 									// 0 90 180 270 : 0 1 2 3
+int posX = 41 + (rand() % 8);					// current x position 39 - 48 :: 40 - 47
+int posY = 4;								// current y position
+int Mmax;								// max move x
+int Mmin;							// min move -x
+int cd = 0;	  				  // block can drop? 0 1
 int cr,cmr,cml;			// block can move right or left and rotate  0 1
-int score,counter;
-bool over; //game over 
+double score = 0.00000;
+bool over = 0; //game over 
 
 // sceen ::
 const int width = 100, height = 24;
@@ -50,15 +50,19 @@ void drawField(char (&screen)[24][100])
 	{
 		for (int x = 0; x < 100; ++x)
 		{
-		fflush(stdout);
-		printf("%c",screen[y][x]);
+		cout << (char)screen[y][x];
 		}
-	printf("\n");
+	cout << endl;
 	}
- printf("%d %d", rotate, Block);
 }
 
 // tetris ::
+void overcheck(char (&x)[24][100]){
+	if(x[2][40] == '@' || x[2][41] == '@' || x[2][42] == '@' || x[2][43] == '@' || x[2][44] == '@' || x[2][45] == '@' ||x[2][46] == '@' || x[2][47] == '@' || x[2][48] == '@' || x[2][49] == '@'  ){
+		over = 1;
+	}
+}
+
 void getscore(char (&x)[24][100]){
 	for(int i = 21;i>=2;i--){
 		if(x[i][40] == '@' && x[i][41] == '@' &&x[i][42] == '@' && x[i][43] == '@' && x[i][44] == '@' && x[i][45] == '@' && x[i][46] == '@' && x[i][47] == '@'&&x[i][48] == '@' && x[i][49] == '@'){
@@ -72,9 +76,18 @@ void getscore(char (&x)[24][100]){
 		x[i][47] = ' ' ;
 		x[i][48] = ' ' ;
 		x[i][49] = ' ' ;
-		score += 100;
-		 for(int i = 21;i>=2;i--){
-		////
+		score += 0.00250;
+		 for(int j = i;j>=2;j--){
+		x[j][40] = 	x[j-1][40];
+		x[j][41] = 	x[j-1][41];
+		x[j][42] = 	x[j-1][42];
+		x[j][43] = 	x[j-1][43];
+		x[j][44] =	x[j-1][44];
+		x[j][45] = 	x[j-1][45];
+		x[j][46] = 	x[j-1][46];
+		x[j][47] = 	x[j-1][47];
+		x[j][48] = 	x[j-1][48];
+		x[j][49] = 	x[j-1][49];
 		 }
 		}
 	}
@@ -86,10 +99,10 @@ void newBlock()
 	if(cd == 0){
 	 Block = rand() %7;	//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6)rand() %7
 	 rotate = rand() %4; // 0 90 180 270 : 0 1 2 3
-	 posX = 45;	// current x position 39 - 48 :: 40 - 47
+	 posX = 41 + rand()%7;	// current x position 39 - 48 :: 40 - 47
 	 posY = 3;	// current y position
 	 cd = 1;
-
+	 score += 0.00025;
 	}
 }
 
@@ -995,17 +1008,19 @@ int main()
 	srand(time(0));
 	buildscene(screen);
 	bool R = 1;
-
 	while (R)
 	{   
+		drawField(screen);
 		if(over != 1){
+		ios_base::sync_with_stdio(false);
 		newBlock();
 		Tetris(screen, posX, posY, Block, rotate);	
-		}
-		drawField(screen);
 		getscore(screen);
 		drop(posY, cd);
-		Sleep(300);
+		overcheck(screen);
+		}
+		
+		Sleep(240);
 		if (_kbhit())
 		{
 			char key = _getch();
@@ -1026,7 +1041,7 @@ int main()
 				Block -= 1;
 			}
 			
-			if(Block <0) Block = 6;
+		//	if(Block <0) Block = 6;
 		}
 		
 	}
