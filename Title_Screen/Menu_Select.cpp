@@ -26,8 +26,8 @@ void close() {
 int title_screen() {
     while (true) {
         system("cls");
-        cout << title();
-        cout << menu();
+        title();
+        menu();
         char key = getcommand();
         switch (key) {
             case 'E':
