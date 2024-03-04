@@ -7,11 +7,11 @@
 #include <vector>
 #include <unistd.h>
 #include <ctime> 
-#include <string>   
+#include <string>
 using namespace std;
 
 //Jao9's Code
-
+ char key;
 int Block;							//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6) rand() % 7.
 int rotate = 0; 					// 0 90 180 270 : 0 1 2 3.
 int posX = 41 + (rand() % 8);		// current x position 39 - 48 :: 40 - 47.
@@ -19,11 +19,17 @@ int posY = 4;						// current y position.
 int cd = 1;	  				        // block can drop? 0 1.
 int cr,cmr,cml;			            // block can move right / left and rotate?  0 1.
 double scoredb = 0.00000; 			// score.
+int scoreint;
 string scoretoshow;				    // score to show on array.
 bool over = 0;                      // GAME OVER CHEACK.
 bool START = 0;						// START TETRIS
 const int h = 20;
 const int w = 40;
+string name;
+double score;
+vector<string> names;
+vector<int> scores;
+bool game = 1;
 
 
 
@@ -95,6 +101,7 @@ void drawField(char (&screen)[25][100])
 
 void overcheck(char (&x)[25][100]){
 	if((x[2][40] == '@' || x[2][41] == '@' || x[2][42] == '@' || x[2][43] == '@' || x[2][44] == '@' || x[2][45] == '@' ||x[2][46] == '@' || x[2][47] == '@' || x[2][48] == '@' || x[2][49] == '@') || hp_player * 100 <= 0  ){
+		scoreint = (int)(scoredb * 100000);
 		over = 1;
 	}
 }
@@ -1187,7 +1194,57 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 	}
 	
 //	if(Block <0) Block = 6; TEST COMMAND.
-	
+void readscore(){
+		ifstream dest;
+	dest.open("score.txt"); 
+	string text0;
+	while (getline(dest,text0))
+	{
+		const char * text1 = text0.c_str();
+		char format[] = "%[^:]: %d";
+		char name[100];
+		int score;
+		sscanf(text1,format,name,&score);
+			names.push_back(name);
+			scores.push_back(score);
+			//cout << name <<" "<<score<<endl;
+	}
+	dest.close();
+}
+
+void show_score(){
+	readscore();
+	for(int i=0;i<10;i++){
+		cout << names[i] << " " << scores[i] << endl;
+	}
+}
+void findscore_edit(string myname,int myscore){
+    names.push_back(myname);
+	scores.push_back(myscore);
+	readscore();
+	for (int i = 0; i < 10 - 1; ++i) {
+        for (int j = 0; j < 10 - i - 1; ++j) {
+            if (scores[j] < scores[j + 1]) {
+                int temp = scores[j];
+                string temps = names[j];
+                
+                names[j] = names[j + 1];
+                names[j + 1] = temps;
+                
+                scores[j] = scores[j + 1];
+                scores[j + 1] = temp;
+            }
+        }
+    }
+    ofstream textEdit("score.txt");
+    for (int i = 0; i < 10;i++){
+        //cout << names[i] << " " <<scores[i]<<endl;
+    	textEdit << names[i]<<":"<<scores[i]<<"\n";
+	}
+	textEdit.close();
+	names.clear();
+	scores.clear();
+}
 //Asset Code
 void title() {
     const int sizeY = 20; 
@@ -1246,7 +1303,6 @@ void menu(){
         }
     cout <<"\n";
 }
-
 void gameover(){
     string name;
     const int sizeY = 27; 
@@ -1290,6 +1346,8 @@ void gameover(){
         }
     cout << "                              Input your name : ";
     getline(cin,name);
+    findscore_edit(name,scoreint);
+    show_score();
 }
 
 char mons[3][20][40] = {{
@@ -1398,6 +1456,9 @@ void EVENT_monster(){
 	}
 }
 
+
+
+
 //Tul's Code
 // Get key from keyboard
 int title_screen();
@@ -1409,20 +1470,76 @@ char getcommand() {
 }
 
 void close() {
-    cout << "Invalid command.\n";
-    Sleep(1500);
+    Sleep(250);
 }
+
+int l_board()
+{
+    ifstream dest;
+	dest.open("score.txt");
+    string text0; 
+    while (getline(dest,text0))
+	{
+		const char * text1 = text0.c_str();
+		char format[] = "%[^:]: %d";
+		char name[100];
+		int score;
+		sscanf(text1,format,name,&score);
+			names.push_back(name); 
+			scores.push_back(score);
+    }
+
+
+
+		cout << "             o--o0o--o             " << endl;
+		cout << " 8=8========LEADERBOARD========8=8 " << endl;
+		cout << "  |  NAME                SCORE  |  " << endl;
+		cout << "  |                             |  " << endl;
+
+		for (int i = 0; i < 10; i++)
+		{
+			int temp = scores[i], tempPos=0;
+				while (temp != 0)
+				{
+					temp = temp / 10;
+					tempPos++;
+				}
+		
+
+			int positionOne = 24 - ((names[i].size())+tempPos);
+
+			cout << "  |  " << names[i];
+			for (int k = 0; k <= positionOne; k++)
+			{
+				cout << " ";
+			}
+			cout << scores[i];
+			cout << "  |" << endl;
+		}
+		
+		cout << "  |                             |  " << endl;
+		cout << " 8=8===========================8=8 " << endl;
+		cout << "             o--o0o--o             " << endl;
+		cout << endl;
+
+    dest.close();
+
+	return 0;
+}
+
 
 int title_screen() {
     while (true) {
         system("cls");
         title();
         menu();
-        char key = getcommand();
+         key = getcommand();
         switch (key) {
             case 'E':
                 return 0;
             case 'A':
+            	over = 0;
+            	game = 1;
             	START = 1;
                 playground();
                 break;
@@ -1439,19 +1556,30 @@ int title_screen() {
 int leaderboard() {
     while (true) {
         system("cls");
-        cout << "\n( Return to menu: E )";
+        l_board();
+        cout << "( Return to menu: E )";
         char key = getcommand();
-        if (key == 'E') return 0;
-        else close();
+        if(key == 'E') break;
     }
+}
+
+	
+
+int gameover_screen(){
+	
+        system("cls");
+        gameover();
+        game = 0;
+        
+	
 }
 
 
 int playground() {
     
 	buildscene(screen);
-	ios_base::sync_with_stdio(false);
-	while (true)
+	//ios_base::sync_with_stdio(false);
+	while (game)
 	{   
 		startgame();
 		drawField(screen);
@@ -1463,33 +1591,38 @@ int playground() {
 		drop(posY, cd);
 		shown(screen);
 		overcheck(screen);
-		}
-		Sleep(200);
+		
+		Sleep(50);
 		if (_kbhit())
 		{
-			char key = _getch();
-			if (key == 'W' || key == 'w')
+			char M = _getch();
+			if (M == 'W' || M == 'w')
 			{
 				rotation();
 			}
-			else if (key == 'A' || key == 'a')
+			else if (M == 'A' || M == 'a')
 			{
 				move(-1, screen);
 			}
-			else if (key == 'D' || key == 'd')
+			else if (M == 'D' || M == 'd')
 			{
 				move(1, screen);
 			}
-			else if (key == 'S' || key == 's')
+			else if (M == 'S' || M == 's')
 			{
 			
 			}
 			
 		}
-		
+	}else{
+		system("cls");
+		gameover_screen();
+	}
+	 
 	}
 		
-	}
+}
+
     
 
 
