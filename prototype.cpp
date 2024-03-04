@@ -12,26 +12,38 @@ using namespace std;
 
 //Jao9's Code
 
-int Block;				//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6) rand() % 7.
+int Block;							//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6) rand() % 7.
 int rotate = 0; 					// 0 90 180 270 : 0 1 2 3.
 int posX = 41 + (rand() % 8);		// current x position 39 - 48 :: 40 - 47.
 int posY = 4;						// current y position.
-int cd = 0;	  				        // block can drop? 0 1.
+int cd = 1;	  				        // block can drop? 0 1.
 int cr,cmr,cml;			            // block can move right / left and rotate?  0 1.
 double scoredb = 0.00000; 			// score.
 string scoretoshow;				    // score to show on array.
 bool over = 0;                      // GAME OVER CHEACK.
+bool START = 0;						// START TETRIS
 const int h = 20;
 const int w = 40;
-double hp_player = 100.000;
+
+
+
+double hp_player;
 string show_hp_player;
-double hp_monster = 50.000;
+
+double hp_monster ;
 string show_hp_monster;
+int atktime;
+
+int monnumber;
 
 
 // CREATE ARRAY SCREEN.
 const int width = 100, height = 25; 
 char screen[height][width] = {};
+
+
+
+
 
 
 //setup array screen game build -BORDER -SCORE & HP PLAYER , ENEMY TEXT. *One time use.
@@ -58,12 +70,8 @@ void buildscene(char (&x)[25][100])
 	x[3][30] = 'R';
 	x[3][31] = 'E';
 	x[3][32] = ':';
-	
-	string show_hp_player = to_string(hp_player);
-	string show_hp_monster = to_string(hp_monster);
-	x[24][41] = 'H';x[24][42] = 'P'; x[24][44] = show_hp_player[0];x[24][45] = show_hp_player[1];x[24][46] = show_hp_player[2];// PLAYER.
-	x[24][71] = 'H';x[24][72] = 'P'; x[24][74] = show_hp_monster[0]; x[24][75] = show_hp_monster[1];// ENEMY.
-	
+	x[24][41] = 'H';x[24][42] = 'P'; 
+	x[24][71] = 'H';x[24][72] = 'P';
 }
 
 //SHOW ARRAY AND CLEAR SCREEN.
@@ -81,22 +89,33 @@ void drawField(char (&screen)[25][100])
 }
 
 // TETRIS.
+
+
+
+
 void overcheck(char (&x)[25][100]){
-	if(x[2][40] == '@' || x[2][41] == '@' || x[2][42] == '@' || x[2][43] == '@' || x[2][44] == '@' || x[2][45] == '@' ||x[2][46] == '@' || x[2][47] == '@' || x[2][48] == '@' || x[2][49] == '@'  ){
+	if((x[2][40] == '@' || x[2][41] == '@' || x[2][42] == '@' || x[2][43] == '@' || x[2][44] == '@' || x[2][45] == '@' ||x[2][46] == '@' || x[2][47] == '@' || x[2][48] == '@' || x[2][49] == '@') || hp_player * 100 <= 0  ){
 		over = 1;
 	}
 }
 // If the block is at the top of the top == OVER.
 
-void scoreshow(char (&x)[25][100]){
+void shown(char (&x)[25][100]){
  	string scoretoshow = to_string(scoredb);
 	x[3][33] = scoretoshow[2]; 	x[3][34] = scoretoshow[3]; 	x[3][35] = scoretoshow[4]; 	x[3][36] = scoretoshow[5];x[3][37] = scoretoshow[6];
+	
+	string show_hp_player = to_string(hp_player);
+	string show_hp_monster = to_string(hp_monster);
+	
+	x[24][44] = show_hp_player[2];x[24][45] = show_hp_player[3];
+	x[24][74] = show_hp_monster[2]; x[24][75] = show_hp_monster[3];// ENEMY.
 }
 
-void attack(){
-	hp_monster -= 50;
+void attack(int x){
+	hp_monster -= (0.05) * x;
 }
 void getscore(char (&x)[25][100]){
+	int powerup = 0;
 	for(int i = 21;i>=2;i--){
 		if(x[i][40] == '@' && x[i][41] == '@' &&x[i][42] == '@' && x[i][43] == '@' && x[i][44] == '@' && x[i][45] == '@' && x[i][46] == '@' && x[i][47] == '@'&&x[i][48] == '@' && x[i][49] == '@'){
 		x[i][40] = ' ' ;
@@ -109,8 +128,8 @@ void getscore(char (&x)[25][100]){
 		x[i][47] = ' ' ;
 		x[i][48] = ' ' ;
 		x[i][49] = ' ' ;
-		scoredb += 0.00500;
-		attack();
+		scoredb += 0.00250;
+		powerup += 1;
 		 for(int j = i;j>=2;j--){
 		x[j][40] = 	x[j-1][40];
 		x[j][41] = 	x[j-1][41];
@@ -125,18 +144,21 @@ void getscore(char (&x)[25][100]){
 		 }
 		}
 	}
+	
+	attack(powerup);
 }
 // delete line and move. +score
-
+	
 void newBlock() 
 { 
 	if(cd == 0){
-	 Block = 3;	//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6)rand() %7
-	 rotate = 3; // 0 90 180 270 : 0 1 2 3
+	 Block = rand() %7;	//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6)rand() %7
+	 rotate = rand() %4; // 0 90 180 270 : 0 1 2 3
 	 posX = 41 + rand()%7;	// current x position 39 - 48 :: 40 - 47
 	 posY = 3;	// current y position
 	 cd = 1;
 	 scoredb += 0.00025;
+	 atktime++;
 	}
 }
 // RESET variable to start new block.
@@ -1164,19 +1186,6 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 	}
 	}
 	
-void startgame(){
-	
-}
-	
-void fighting(){
-	//if(mons == 0){
-		//create 
-	//}
-	
-}
-
-
-
 //	if(Block <0) Block = 6; TEST COMMAND.
 	
 //Asset Code
@@ -1283,8 +1292,9 @@ void gameover(){
     getline(cin,name);
 }
 
-char mon1[h][w] = {
-                          {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+char mons[3][20][40] = {{
+                
+							{' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
@@ -1304,8 +1314,7 @@ char mon1[h][w] = {
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','L','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','=',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
-                             } ;
-char mon2[h][w] = {
+                             } , {
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
@@ -1326,9 +1335,8 @@ char mon2[h][w] = {
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-                             } ;
-char mon3[h][w] = {
-{' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+                             }, {
+                          {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','\\',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','|','|',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
@@ -1348,18 +1356,48 @@ char mon3[h][w] = {
                           {' ',' ',' ',' ',' ',' ',' ',' ','\\','_','\\','A','A','/',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
                           {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}
-} ;
+                             }} ;
 
-void monsterspawn(char (&x)[25][100],char mons[20][40]){
+void monsterspawn(char (&x)[25][100],int y){
     for(int i = 0; i < 20; i++) {
         for(int j = 0; j < 40; j++) {
-            x[2+i][54+j] = mons[i][j];
+            x[2+i][54+j] = mons[y][i][j];
         }
     }
 }
-bool checkMons(){
-	
+
+void startgame(){
+	if(START == 1){
+		hp_monster = 0.1 * (rand()%10 + 1);
+		hp_player = 0.20 ;
+		monnumber = rand()%3;
+		scoredb = 0.00000;
+		atktime = 0;
+		Block = rand() % 7;   	//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6)
+	    rotate = rand() % 4;     // 0 90 180 270 : 0 1 2 3
+	    posX = 41 + rand()%7;	// current x position 39 - 48 :: 40 - 47
+	    posY = 3;	            // current y position
+	    cd = 1;
+		monsterspawn(screen,monnumber);
+	    START = 0;
+	}	
 }
+
+void EVENT_monster(){
+	if(hp_monster*100 == 0){
+		hp_monster = 0.1 * (rand()%10 + 1);
+		hp_player += 0.05;
+		monnumber = rand()%3;
+		monsterspawn(screen,monnumber);
+		atktime = 0;
+	}else{
+		if(atktime == 3){
+			atktime = 0;
+			hp_player -= rand()%5 * 0.01;
+		}
+	}
+}
+
 //Tul's Code
 // Get key from keyboard
 int title_screen();
@@ -1385,6 +1423,7 @@ int title_screen() {
             case 'E':
                 return 0;
             case 'A':
+            	START = 1;
                 playground();
                 break;
             case 'B':
@@ -1411,21 +1450,20 @@ int leaderboard() {
 int playground() {
     
 	buildscene(screen);
-	bool R = 1;
-	while (R)
+	ios_base::sync_with_stdio(false);
+	while (true)
 	{   
 		startgame();
 		drawField(screen);
 		if(over != 1){
-		ios_base::sync_with_stdio(false);
+		EVENT_monster();
 		newBlock();
 		Tetris(screen, posX, posY, Block, rotate);	
 		getscore(screen);
 		drop(posY, cd);
-		scoreshow(screen);
+		shown(screen);
 		overcheck(screen);
 		}
-		
 		Sleep(200);
 		if (_kbhit())
 		{
