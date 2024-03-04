@@ -7,26 +7,29 @@
 #include <vector>
 #include <unistd.h>
 #include <ctime> 
+#include <string>   
 using namespace std;
 
 
-int Block = rand() % 7;									//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6) rand() % 7
-int rotate = 0; 									// 0 90 180 270 : 0 1 2 3
-int posX = 41 + (rand() % 8);					// current x position 39 - 48 :: 40 - 47
-int posY = 4;								// current y position
-int Mmax;								// max move x
-int Mmin;							// min move -x
-int cd = 0;	  				  // block can drop? 0 1
-int cr,cmr,cml;			// block can move right or left and rotate  0 1
-double score = 0.00000;
-bool over = 0; //game over 
+int Block;				//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6) rand() % 7.
+int rotate = 0; 					// 0 90 180 270 : 0 1 2 3.
+int posX = 41 + (rand() % 8);		// current x position 39 - 48 :: 40 - 47.
+int posY = 4;						// current y position.
+int cd = 0;	  				        // block can drop? 0 1.
+int cr,cmr,cml;			            // block can move right / left and rotate?  0 1.
+double scoredb = 0.00000; 			// score.
+string scoretoshow;				    // score to show on array.
+bool over = 0;                      // GAME OVER CHEACK.
 
-// sceen ::
-const int width = 100, height = 24;
+
+// CREATE ARRAY SCREEN.
+const int width = 100, height = 25; 
 char screen[height][width] = {};
 
-void buildscene(char (&x)[24][100])
-{
+
+//setup array screen game build -BORDER -SCORE & HP PLAYER , ENEMY TEXT. *One time use.
+void buildscene(char (&x)[25][100])
+{	
 	for (int i = 0; i < height; i++)
 	{
 		for (int j = 0; j < width; j++)
@@ -41,12 +44,24 @@ void buildscene(char (&x)[24][100])
 			}
 		}
 	}
+	
+	x[3][27] = 'S';
+	x[3][28] = 'C';
+	x[3][29] = 'O';
+	x[3][30] = 'R';
+	x[3][31] = 'E';
+	x[3][32] = ':';
+	
+	x[24][41] = 'H';x[24][42] = 'P'; // PLAYER.
+	x[24][71] = 'H';x[24][72] = 'P'; // ENEMY.
+	
 }
 
-void drawField(char (&screen)[24][100])
+//SHOW ARRAY AND CLEAR SCREEN.
+void drawField(char (&screen)[25][100])
 {
 	system("cls");
-	for (int y = 0; y < 24; ++y)
+	for (int y = 0; y < 25; ++y)
 	{
 		for (int x = 0; x < 100; ++x)
 		{
@@ -56,14 +71,20 @@ void drawField(char (&screen)[24][100])
 	}
 }
 
-// tetris ::
-void overcheck(char (&x)[24][100]){
+// TETRIS.
+void overcheck(char (&x)[25][100]){
 	if(x[2][40] == '@' || x[2][41] == '@' || x[2][42] == '@' || x[2][43] == '@' || x[2][44] == '@' || x[2][45] == '@' ||x[2][46] == '@' || x[2][47] == '@' || x[2][48] == '@' || x[2][49] == '@'  ){
 		over = 1;
 	}
 }
+// If the block is at the top of the top == OVER.
 
-void getscore(char (&x)[24][100]){
+void scoreshow(char (&x)[25][100]){
+ 	string scoretoshow = to_string(scoredb);
+	x[3][33] = scoretoshow[2]; 	x[3][34] = scoretoshow[3]; 	x[3][35] = scoretoshow[4]; 	x[3][36] = scoretoshow[5];x[3][37] = scoretoshow[6];
+}
+
+void getscore(char (&x)[25][100]){
 	for(int i = 21;i>=2;i--){
 		if(x[i][40] == '@' && x[i][41] == '@' &&x[i][42] == '@' && x[i][43] == '@' && x[i][44] == '@' && x[i][45] == '@' && x[i][46] == '@' && x[i][47] == '@'&&x[i][48] == '@' && x[i][49] == '@'){
 		x[i][40] = ' ' ;
@@ -76,7 +97,7 @@ void getscore(char (&x)[24][100]){
 		x[i][47] = ' ' ;
 		x[i][48] = ' ' ;
 		x[i][49] = ' ' ;
-		score += 0.00250;
+		scoredb += 0.00250;
 		 for(int j = i;j>=2;j--){
 		x[j][40] = 	x[j-1][40];
 		x[j][41] = 	x[j-1][41];
@@ -92,19 +113,21 @@ void getscore(char (&x)[24][100]){
 		}
 	}
 }
+// delete line and move. +score
 
 
-void newBlock()
+void newBlock() 
 { 
 	if(cd == 0){
-	 Block = rand() %7;	//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6)rand() %7
-	 rotate = rand() %4; // 0 90 180 270 : 0 1 2 3
+	 Block = 3;	//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6)rand() %7
+	 rotate = 3; // 0 90 180 270 : 0 1 2 3
 	 posX = 41 + rand()%7;	// current x position 39 - 48 :: 40 - 47
 	 posY = 3;	// current y position
 	 cd = 1;
-	 score += 0.00025;
+	 scoredb += 0.00025;
 	}
 }
+// RESET variable to start new block.
 
 void drop(int &posY,int cd)
 {
@@ -113,6 +136,7 @@ void drop(int &posY,int cd)
 		posY += 1;
 	}
 }
+// DROP block.
 
 void rotation()
 {
@@ -129,7 +153,8 @@ void rotation()
 	
 	}
 }
-void move(int x, char s[24][100], int Mmax, int Mmin)
+// ROTATION block.
+void move(int x, char s[25][100])
 {
 	
 	if (x == -1&& cml == 1)
@@ -142,8 +167,10 @@ void move(int x, char s[24][100], int Mmax, int Mmin)
 	}
 	
 }
+// MOVE block.
 
-void Tetris(char (&x)[24][100], int posX, int posY, int currentBlock, int rotate)
+// MAIN::TATRIS LOGIC.  *7 block and 4 rotate case.
+void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate)
 {	
 	for (int i = 0; i <= 21; i++)
 	{
@@ -655,6 +682,7 @@ void Tetris(char (&x)[24][100], int posX, int posY, int currentBlock, int rotate
 			{
 				cd = 0;
 			}
+			
 			if (cd == 0)
 			{
 				x[posY][posX] = '@'; // center
@@ -748,11 +776,13 @@ void Tetris(char (&x)[24][100], int posX, int posY, int currentBlock, int rotate
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 2][posX - 2] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == ' '){
+			//--*************************************************************//
+			if (x[posY + 2][posX - 2] == ' ' && x[posY + 1][posX - 2] == ' ' ){
 				cml = 1;
 			}else{ 
 				cml = 0;
 			}
+			
 			if (x[posY][posX + 1] == ' ' &&  x[posY - 1 ][posX - 1] == ' ' && x[posY][posX - 1] == ' '){
 				cr = 1;
 			}else{
@@ -1119,11 +1149,22 @@ void Tetris(char (&x)[24][100], int posX, int posY, int currentBlock, int rotate
 				x[posY - 1][posX] = '@';
 			}
 		}
+		
 		break;
-
 		break;
 	}
 	}
+	
+void startgame(){
+	
+}
+	
+void fighting(){
+	//if(mons == 0){
+		//create 
+	//}
+	
+}
 
 
 int main()
@@ -1141,10 +1182,11 @@ int main()
 		Tetris(screen, posX, posY, Block, rotate);	
 		getscore(screen);
 		drop(posY, cd);
+		scoreshow(screen);
 		overcheck(screen);
 		}
 		
-		Sleep(150);
+		Sleep(250);
 		if (_kbhit())
 		{
 			char key = _getch();
@@ -1154,19 +1196,20 @@ int main()
 			}
 			else if (key == 'A' || key == 'a')
 			{
-				move(-1, screen, Mmax, Mmin);
+				move(-1, screen);
 			}
 			else if (key == 'D' || key == 'd')
 			{
-				move(1, screen, Mmax, Mmin);
+				move(1, screen);
 			}
 			else if (key == 'S' || key == 's')
 			{
-				Block -= 1;
+			
 			}
 			
-		//	if(Block <0) Block = 6;
 		}
 		
 	}
 }
+
+//	if(Block <0) Block = 6; TEST COMMAND.
