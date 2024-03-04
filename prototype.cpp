@@ -223,7 +223,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 
 	switch (currentBlock)
 	{
-	case 0: // ::I
+	case 0: // :: I :: /clear
 		switch (rotate)
 		{
 		case 0:
@@ -381,7 +381,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 		}
 		break;
 
-	case 1: // mark
+	case 1: 
 		switch (rotate)
 		{
 		case 0:
@@ -390,17 +390,17 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX + 1] = 'O';
 			x[posY - 1][posX - 1] = 'O';
 			
-			if (x[posY - 1][posX + 1] == ' ' && x[posY][posX + 2] == ' '){
+			if ((x[posY+1][posX+2] == ' ' || x[posY][posX + 2 ] == ' ')  && x[posY-1][posX+1] == ' ' ){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY - 1][posX - 2] == ' ' && x[posY][posX - 1] == ' '){
+			if (x[posY][posX - 2] == ' '|| x[posY - 1][posX - 2] == ' '){
 				cml = 1;
 			}else{ 	
 				cml = 0;
 			}
-			if (x[posY + 2][posX] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' ' || x[posY][posX + 1] == 'O'  ){
+			if (x[posY ][posX] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' ' || x[posY][posX + 1] == 'O'  ){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -427,21 +427,22 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX + 1] = 'O';
 			x[posY + 1][posX] = 'O';
 			
-			if (x[posY + 1 ][posX + 1] == ' ' && x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2] == ' '){
+			if (x[posY + 1][posX + 1] == ' ' && x[posY][posX + 2] == ' ' &&  x[posY - 1][posX + 2] == ' ' && x[posY + 2][posX +1] == ' '){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == ' ' && x[posY - 1][posX] == ' '){
+			if (x[posY + 1][posX - 1] == ' ' && x[posY - 1][posX] == ' ' && ( x[posY][posX - 1] == ' ' || x[posY + 2][posX - 1] == ' ' )){
 				cml = 1;
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 2][posX + 2] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY + 2][posX] == ' '){
-				cr = 1;
-			}else{
-				cr = 0;
+				if (x[posY + 2][posX + 1] == ' ' && x[posY + 2][posX] == ' ' && x[posY + 1][posX - 1]){  ///sdsasdad
+					cr = 1;
+				}else{
+					cr = 0;
 			}
+		
 			if (x[posY + 2][posX] == ' ' && x[posY + 1][posX + 1] == ' ')
 			{
 				cd = 1;
@@ -464,22 +465,22 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY + 1][posX] = 'O';
 			x[posY + 1][posX + 1] = 'O';
 		
-			if (x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' '){
+			if ( (x[posY + 2][posX + 2] == ' ' || x[posY +1][posX + 2] == ' ' ) && x[posY + 2][posX + 1] == ' ' && x[posY + 2][posX] == ' '){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX - 1] == ' ' && x[posY][posX - 2] == ' '){
+			if (x[posY + 2][posX] == ' ' && x[posY + 2][posX - 1] == ' ' && ( x[posY + 1][posX - 2] == ' ' || x[posY][posX - 2] == ' ') && x[posY + 1 ][posX - 1] == ' '){
 				cml = 1;
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 1][posX - 1] == ' ' && x[posY + 2][posX - 1] == ' ' && x[posY][posX] == ' ' || x[posY][posX] == 'O'  ){
-				cr = 1;
-			}else{
-				cr = 0;
-			}
-			if (x[posY + 2][posX] == ' ' && x[posY + 2][posX + 1] == ' ' && x[posY + 1][posX - 1])
+				if (x[posY + 2][posX - 1] == ' ' && x[posY + 1][posX - 1] == ' '){
+					cr = 1;
+				}else{
+					cr = 0;
+				}
+			if (x[posY + 2][posX] == ' ' && x[posY + 2][posX + 1] == ' ' && x[posY + 1][posX - 1] == ' ')
 			{
 				cd = 1;
 			}
@@ -501,21 +502,21 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX - 1] = 'O';
 			x[posY + 1][posX - 1] = 'O';
 			
-			if (x[posY + 1 ][posX] == ' ' && x[posY][posX + 1] == ' ' && x[posY - 1][posX + 1] == ' '){
+			if (x[posY + 2][posX] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' ' && x[posY +1][posX] == ' '){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX - 2] == ' ' && x[posY][posX - 2] == ' ' && x[posY - 1][posX - 1] == ' '){
+			if ((x[posY + 2][posX - 2] == ' ' || x[posY][posX - 2] == ' ') && x[posY + 1][posX - 2] == ' ' && x[posY - 1][posX - 1] == ' ' ){
 				cml = 1;
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY][posX - 1] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX] == ' ' || x[posY][posX] == 'O'   ){
-				cr = 1;
-			}else{
-				cr = 0;
-			}
+				if (x[posY + 1][posX] == ' ' && x[posY + 1][posX + 1] == ' '){
+					cr = 1;
+				}else{
+					cr = 0;
+				}
 			if (x[posY + 1][posX] == ' ' && x[posY + 2][posX - 1] == ' ')
 			{
 				cd = 1;
@@ -544,17 +545,17 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY - 1][posX + 1] = 'O';
 			x[posY][posX - 1] = 'O';
 
-			if (x[posY - 1][posX + 2] == ' ' && x[posY][posX + 1] == ' '){
+			if ((x[posY - 1][posX + 2] == ' ' || x[posY][posX + 2] == ' ') && x[posY][posX + 1] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY + 1][posX] == ' '){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY - 1][posX - 1] == ' ' && x[posY][posX - 2] == ' '){
+			if (x[posY + 1][posX - 1] == ' ' && x[posY - 1][posX -1] == ' ' && (x[posY + 1][posX - 2] == ' ' || x[posY][posX - 2] == ' ')){
 				cml = 1;
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 1][posX + 1] == ' ' &&  x[posY + 2 ][posX + 1] == ' ' && x[posY][posX] == ' ' || x[posY][posX] == 'O'  ){
+			if (x[posY + 2][posX + 1] == ' ' &&  x[posY + 1 ][posX + 1] == ' ' && x[posY + 1][posX] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -581,22 +582,22 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX + 1] = 'O';
 			x[posY + 1][posX + 1] = 'O';
 			
-			if (x[posY + 1 ][posX + 2] == ' ' && x[posY][posX + 2] == ' ' && x[posY - 1][posX + 1] == ' '){
+			if ((x[posY + 2 ][posX + 2] == ' '|| x[posY][posX + 2] == ' ') && x[posY + 1][posX + 2] == ' ' && x[posY - 1][posX + 1] == ' '){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX] == ' ' && x[posY][posX - 1] == ' ' && x[posY - 1][posX - 1] == ' '){
+			if (x[posY - 1][posX - 1] == ' ' && x[posY][posX - 1] == ' ' && x[posY + 1][posX] == ' ' && x[posY + 2][posX] == ' '){
 				cml = 1;
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 2][posX - 1] == ' ' &&  x[posY + 2][posX] == ' ' && x[posY + 1][posX + 1] == ' ' || x[posY][posX] == 'O'   ){
+			if (x[posY + 1][posX - 1] == ' ' && x[posY + 1][posX] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
 			}
-			if (x[posY + 1][posX] == ' ' && x[posY + 2][posX + 1] == ' ')
+			if (x[posY + 2][posX] == ' ' && x[posY + 2][posX - 1] == ' ')
 			{
 				cd = 1;
 			}
@@ -618,17 +619,17 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX + 1] = 'O';
 			x[posY + 1][posX - 1] = 'O';
 			
-			if (x[posY + 1][posX + 1] == ' ' && x[posY][posX + 2] == ' '){
+			if ((x[posY][posX + 2] == ' ' || x[posY + 1][posX + 2] == ' ') && x[posY + 1][posX + 1] == ' ' && x[posY + 2][posX + 1] == ' ' && x[posY + 2][posX] == ' '){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX - 2] == ' ' && x[posY][posX - 1] == ' '){
+			if (x[posY][posX - 1] == ' ' && x[posY + 2][posX - 1] == ' ' && (x[posY + 1][posX - 2] == ' ' || x[posY + 2][posX - 2] == ' ')){
 				cml = 1;
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY][posX - 1] == ' ' &&  x[posY + 1][posX - 1] == ' ' && x[posY + 2][posX] == ' ') {
+			if (x[posY][posX - 1] == ' ' &&  x[posY + 2][posX] == ' ' ) {
 				cr = 1;
 			}else{
 				cr = 0;
@@ -655,17 +656,17 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX - 1] = 'O';
 			x[posY + 1][posX] = 'O';
 			
-			if (x[posY + 1 ][posX + 1] == ' ' && x[posY][posX + 1] == ' ' && x[posY - 1][posX] == ' '){
+			if ((x[posY + 2 ][posX + 1] == ' '|| x[posY][posX + 1] == ' ') && x[posY + 1][posX + 1] == ' ' && x[posY - 1][posX] == ' '){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX - 1] == ' ' && x[posY][posX - 2] == ' ' && x[posY - 1][posX - 2] == ' '){
+			if (x[posY - 1][posX - 2] == ' ' && x[posY][posX - 2] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY + 2][posX - 1] == ' '){
 				cml = 1;
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY][posX + 1] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY][posX] == ' ' || x[posY][posX + 1] == 'O'){
+			if (x[posY + 1][posX - 1] == ' ' && x[posY][posX + 1] == ' ' ){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -697,17 +698,25 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX - 1] = 'O';
 			x[posY][posX + 1] = 'O';
 			
-			if (x[posY + 1][posX + 2] == ' ' && x[posY][posX] == ' ' ){
-				cmr = 1;
+			if ((x[posY + 1][posX + 2] == ' ' || x[posY][posX + 2] == ' ') && x[posY + 1][posX + 1] == ' '  && x[posY +1][posX] == ' ' && x[posY - 1][posX] == ' '){
+				if(x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX - 2] == ' ' && x[posY][posX - 2] == ' ' ){
-				cml = 1;
+			if ((x[posY + 1][posX - 2] == ' ' || x[posY - 1][posX - 2] == ' ') && x[posY][posX - 2] == ' ' && x[posY + 1][posX-1] == ' ' && x[posY + 1][posX ] == ' '){
+				if(x[posY][posX - 2] == ' ' && x[posY - 1][posX - 2] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 1][posX] == ' ' &&  x[posY - 1 ][posX + 1] == ' ' && x[posY - 1][posX] == ' '){
+			if (x[posY + 1][posX] == ' ' &&  x[posY + 2][posX] == ' ' ){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -735,17 +744,25 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY - 1][posX] = 'O';
 			x[posY + 1][posX] = 'O';
 		
-			if (x[posY + 2][posX + 1] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX + 2] == ' '){
-				cmr = 1;
+			if (x[posY + 2][posX + 1] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' ' && (x[posY][posX + 2] == ' ' || x[posY - 1][posX + 2] == ' ')){
+				if(x[posY - 1][posX + 2] == ' ' && x[posY - 2][posX + 2] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 2][posX - 1] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == ' '){
-				cml = 1;
+			if ((x[posY + 2][posX - 1] == ' ' || x[posY - 1][posX - 1] == ' ' )&& x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == ' '){
+				if(x[posY][posX - 1] == ' ' && x[posY - 1][posX - 1] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 1][posX + 1] == ' ' &&  x[posY][posX + 1] == ' ' && x[posY][posX - 1] == ' '){
+			if (x[posY + 2][posX + 1] == ' ' &&  x[posY + 1][posX + 1] == ' ' && x[posY + 1][posX - 1] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -772,17 +789,25 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX + 1] = 'O';
 			x[posY + 1][posX + 1] = 'O';
 			
-			if (x[posY + 2][posX + 2] == ' ' && x[posY + 1][posX + 2] == ' '){
-				cmr = 1;
+			if ((x[posY + 2][posX + 2] == ' ' || x[posY][posX + 2] == ' ') && x[posY + 1][posX + 2] == ' ' && x[posY + 1][posX] == ' ' ){
+				if(x[posY + 1][posX + 2] == ' ' && x[posY][posX + 2] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 2][posX] == ' ' && x[posY + 1][posX - 2] == ' '){
-				cml = 1;
+			if (x[posY + 2][posX] == ' ' && x[posY + 1][posX] == ' ' && x[posY + 1][posX - 1] == ' ' && (x[posY + 1][posX - 2] == ' ' || x[posY][posX - 2] == ' ')){
+				if(x[posY][posX - 2] == ' ' && x[posY - 1][posX - 2] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 1][posX] == ' ' &&  x[posY + 1][posX - 1] == ' ' && x[posY - 1][posX] == ' '){
+			if (x[posY + 2][posX] == ' ' &&  x[posY + 2][posX - 1] == ' ' && x[posY + 1][posX] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -809,19 +834,27 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY + 1][posX] = 'O';
 			x[posY + 1][posX - 1] = 'O';
 			
-			if (x[posY + 2][posX + 1] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' '){
-				cmr = 1;
+			if ((x[posY + 2][posX + 1] == ' ' || x[posY - 1][posX + 1] == ' ') && x[posY + 2][posX] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' '){
+				if(x[posY][posX + 1] == ' ' && x[posY - 1][posX + 1] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
 			//--*************************************************************//
-			if (x[posY + 2][posX - 2] == ' ' && x[posY + 1][posX - 2] == ' ' ){
-				cml = 1;
+			if (x[posY + 2][posX - 1] == ' ' && (x[posY + 2][posX - 2] == ' ' || x[posY + 1][posX - 2] == ' ') && (x[posY][posX - 1] == ' ' || x[posY - 1][posX - 1] == ' ')){
+				if(x[posY + 1][posX - 2] == ' ' && x[posY][posX - 2] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
 			
-			if (x[posY][posX + 1] == ' ' &&  x[posY - 1 ][posX - 1] == ' ' && x[posY][posX - 1] == ' '){
+			if (x[posY + 2 ][posX + 1] == ' ' &&  x[posY + 2 ][posX - 1] == ' ' && x[posY + 2][posX] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -854,17 +887,25 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX - 1] = 'O';
 			x[posY][posX + 1] = 'O';
 			
-			if (x[posY + 1][posX + 2] == ' ' && x[posY ][posX + 2] == ' '){
-				cmr = 1;
+			if (x[posY][posX + 2] == ' ' && (x[posY + 1][posX + 2] == ' ' || x[posY - 1 ][posX + 2] == ' ') && x[posY + 1][posX + 1] == ' ' && x[posY + 1][posX] == ' '){
+				if(x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2 ] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX - 2] == ' ' && x[posY ][posX] == ' '){
-				cml = 1;
+			if ((x[posY + 1][posX - 2] == ' ' || x[posY][posX - 2] == ' ') && x[posY + 1][posX - 1] == ' ' && x[posY + 1][posX] == ' ' || x[posY - 1][posX] == ' ' ){
+				if(x[posY][posX - 2] == ' ' && x[posY - 1][posX - 2] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 1][posX] == ' ' &&  x[posY - 1 ][posX] == ' ' && x[posY - 1][posX - 1] == ' '){
+			if (x[posY + 1][posX] == ' ' &&  x[posY + 2 ][posX] == ' ' && x[posY + 2][posX + 1] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -891,22 +932,30 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY + 1][posX] = 'O';
 			x[posY - 1][posX - 1] = 'O';
 			
-			if (x[posY + 2][posX + 1] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY ][posX +1]){
-				cmr = 1;
+			if (x[posY + 2][posX + 1] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX +1]){
+				if(x[posY + 1][posX + 2] == ' ' && x[posY][posX + 2] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 2][posX - 1] == ' ' && x[posY +1][posX - 1] == ' ' && x[posY ][posX - 2] == ' '){
-				cml = 1;
+			if (x[posY + 2][posX - 1] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == ' ' && ( x[posY][posX - 2] == ' ' || x[posY - 1][posX - 2] == ' ' )){
+				if(x[posY][posX - 1] == ' ' && x[posY - 1][posX - 1] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 1][posX - 1] == ' ' &&  x[posY][posX + 1] == ' ' && x[posY][posX - 1] == ' '){
+			if (x[posY + 2][posX - 1] == ' ' &&  x[posY + 1][posX - 1] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
 			}
-			if (x[posY + 2][posX] == ' ' && x[posY][posX - 1] == ' ')
+			if (x[posY + 2][posX] == ' ' && x[posY][posX - 1] == ' ') 
 			{
 				cd = 1;
 			}
@@ -928,17 +977,25 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX + 1] = 'O';
 			x[posY + 1][posX - 1] = 'O';
 			
-			if (x[posY + 2][posX] == ' ' && x[posY + 1][posX + 2] == ' '){
-				cmr = 1;
+			if (x[posY + 2][posX] == ' ' && (x[posY + 1][posX + 2] == ' ' || x[posY][posX + 2] == ' ' ) && x[posY + 1][posX + 1] == ' ' && x[posY + 1][posX] == ' '){
+				if(x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 2][posX - 2] == ' ' && x[posY + 1][posX - 2] == ' '){
-				cml = 1;
+			if ((x[posY + 2][posX - 2] == ' ' || x[posY][posX - 2] == ' ') && x[posY + 1][posX - 2] == ' ' && x[posY + 1][posX] == ' '){
+				if(x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 1][posX + 1] == ' ' &&  x[posY + 1][posX] == ' ' && x[posY - 1][posX] == ' '){
+			if (x[posY + 2][posX] == ' ' &&  x[posY + 1][posX] == ' ' ){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -965,18 +1022,26 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY + 1][posX + 1] = 'O';
 			x[posY - 1][posX] = 'O';
 			x[posY + 1][posX] = 'O';
-			
-			if (x[posY + 2][posX + 2] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY][posX +1]){
-				cmr = 1;
+
+			if ((x[posY - 1][posX + 1] == ' ' || x[posY - 1][posX + 1] == ' ') && x[posY + 2][posX + 1] == ' ' && (x[posY + 2][posX + 2] == ' ' || x[posY + 1][posX + 2])){
+				if(x[posY][posX + 1 ] == ' ' && x[posY - 1][posX + 1] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 2][posX - 1] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == ' '){
-				cml = 1;
+			if (x[posY + 2][posX] == ' ' && x[posY + 2][posX - 1] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1]){
+				if(x[posY - 1][posX - 2] == ' ' && x[posY - 2][posX - 2] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY][posX + 1] == ' ' &&  x[posY - 1 ][posX + 1] == ' ' && x[posY ][posX - 1] == ' '){
+			if (x[posY][posX + 1] == ' ' &&  x[posY + 1 ][posX + 1] == ' ' && x[posY + 1 ][posX - 1] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -1008,17 +1073,25 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX - 1] = 'O';
 			x[posY][posX + 1] = 'O';
 			
-			if (x[posY][posX + 2] == ' ' && x[posY - 1][posX + 1] == ' '){
-				cmr = 1;
+			if (x[posY + 1][posX + 2] == ' ' && x[posY - 1][posX + 1] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY + 1][posX] == ' '){
+				if(x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY][posX - 2] == ' ' && x[posY - 1][posX - 1] == ' '){
-				cml = 1;
+			if ( x[posY + 1][posX - 2] == ' ' && x[posY - 1][posX - 1] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY + 1][posX] == ' ' ){
+				if(x[posY][posX - 2] == ' ' && x[posY - 1][posX - 2] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 1][posX] == ' ' &&  x[posY - 1 ][posX] == 'O' && x[posY][posX + 1] == 'O' ||  x[posY - 1 ][posX] == 'O' || x[posY][posX + 1] == 'O'){
+			if (x[posY + 2][posX] == ' ' && x[posY + 1][posX] == ' ' && x[posY + 1][posX + 1] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -1045,17 +1118,25 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX + 1] = 'O';
 			x[posY + 1][posX] = 'O';
 			
-			if(x[posY + 1][posX + 1] == ' ' && x[posY][posX + 2] == ' ' && x[posY - 1][posX + 1] == ' '){
-				cmr = 1;
+			if(x[posY - 1][posX + 1] == ' ' && x[posY + 1][posX + 2] == ' '  && x[posY + 1][posX + 1] == ' ' && x[posY + 2][posX + 1] == ' '){
+				if(x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if(x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == ' ' && x[posY - 1][posX - 1] == ' '){
-				cml = 1;
+			if(x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == ' ' &&  x[posY + 2][posX - 1] == ' '){
+				if(x[posY][posX - 1] == ' ' && x[posY - 1][posX - 1] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY][posX - 1] == ' ' &&  x[posY][posX + 1] == 'O' && x[posY + 1][posX] == 'O'){
+			if (x[posY + 2][posX] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY + 1][posX - 1] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -1082,17 +1163,25 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX - 1] = 'O';
 			x[posY + 1][posX] = 'O';
 			
-			if (x[posY + 1][posX + 1] == ' ' && x[posY][posX + 2] == ' '){
-				cmr = 1;
+			if (x[posY + 1][posX + 2] == ' ' && x[posY + 1][posX + 1] == ' ' && x[posY + 2][posX + 1] == ' '){
+				if(x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX - 1] == ' ' && x[posY][posX - 2] == ' '){
-				cml = 1;
+			if ( x[posY + 1][posX - 2] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY + 2][posX - 1] == ' '){
+				if(x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY - 1][posX] == ' ' &&  x[posY + 1][posX] == 'O' && x[posY][posX - 1] == 'O'){
+			if (x[posY + 2][posX] == ' ' && x[posY + 1][posX - 1] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -1119,17 +1208,25 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY + 1][posX] = 'O';
 			x[posY][posX - 1] = 'O';
 			
-			if(x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' ' && x[posY - 1][posX + 1] == ' '){
-				cmr = 1;
+			if (x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' ' &&  x[posY + 2][posX + 1] == ' '){
+				if(x[posY][posX + 1] == ' ' && x[posY - 1][posX + 1] == '@'){
+					cmr = 0;
+				}else{
+					cmr = 1;
+				}
 			}else{ 
 				cmr = 0;
 			}
-			if(x[posY + 1][posX - 1] == ' ' && x[posY][posX - 2] == ' ' && x[posY - 1][posX - 1] == ' '){
-				cml = 1;
+			if (x[posY - 1][posX - 1] == ' ' && x[posY + 1][posX - 2] == ' '  && x[posY + 1][posX - 1] == ' ' && x[posY + 2][posX - 1] == ' '){
+				if(x[posY][posX - 2] == ' ' && x[posY - 1][posX - 2] == '@'){
+					cml = 0;
+				}else{
+					cml = 1;
+				}
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY][posX + 1] == ' ' &&  x[posY - 1 ][posX] == 'O' && x[posY][posX - 1] == 'O'){
+			if (x[posY + 1][posX + 1] == ' ' && x[posY + 1][posX - 1] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -1161,7 +1258,8 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY - 1][posX + 1] = 'O';
 			x[posY - 1][posX] = 'O';
 			
-			if (x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2] == ' '){
+			
+			if (x[posY][posX + 2] == ' ' && x[posY - 1][posX + 2] == ' ' ){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
@@ -1171,6 +1269,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			}else{ 
 				cml = 0;
 			}
+			
 			if (x[posY + 1][posX] == ' ' && x[posY + 1][posX + 1] == ' ')
 			{
 				cd = 1;
@@ -1178,6 +1277,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			else
 			{
 				cd = 0;
+				
 			}
 			if (cd == 0)
 			{
@@ -1191,7 +1291,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 		break;
 		break;
 	}
-	}
+}
 	
 //	if(Block <0) Block = 6; TEST COMMAND.
 void readscore(){
