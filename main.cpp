@@ -20,7 +20,7 @@ int cr,cmr,cml;			            // block can move right / left and rotate?  0 1.
 double scoredb = 0.00000; 			// score.
 string scoretoshow;				    // score to show on array.
 bool over = 0;                      // GAME OVER CHEACK.
-
+int moment = 0;
 
 // CREATE ARRAY SCREEN.
 const int width = 100, height = 25; 
@@ -97,7 +97,9 @@ void getscore(char (&x)[25][100]){
 		x[i][47] = ' ' ;
 		x[i][48] = ' ' ;
 		x[i][49] = ' ' ;
+		
 		scoredb += 0.00250;
+		
 		 for(int j = i;j>=2;j--){
 		x[j][40] = 	x[j-1][40];
 		x[j][41] = 	x[j-1][41];
@@ -119,8 +121,8 @@ void getscore(char (&x)[25][100]){
 void newBlock() 
 { 
 	if(cd == 0){
-	 Block = 3;	//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6)rand() %7
-	 rotate = 3; // 0 90 180 270 : 0 1 2 3
+	 Block = 1;	//(I = 0 ,N = 1,2 ,L = 3,4 ,W = 5 ,O = 6)rand() %7
+	 rotate = 1; // 0 90 180 270 : 0 1 2 3
 	 posX = 41 + rand()%7;	// current x position 39 - 48 :: 40 - 47
 	 posY = 3;	// current y position
 	 cd = 1;
@@ -133,7 +135,15 @@ void drop(int &posY,int cd)
 {
 	if (cd == 1)
 	{
+		if(moment == 1){
+		
 		posY += 1;
+		moment = 0;
+		}
+		else if(moment ==0){
+			moment = 1;
+		}
+		
 	}
 }
 // DROP block.
@@ -185,7 +195,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 
 	switch (currentBlock)
 	{
-	case 0: // ::I
+	case 0: // :: I :: /clear
 		switch (rotate)
 		{
 		case 0:
@@ -343,7 +353,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 		}
 		break;
 
-	case 1: // mark
+	case 1: 
 		switch (rotate)
 		{
 		case 0:
@@ -352,12 +362,12 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY][posX + 1] = 'O';
 			x[posY - 1][posX - 1] = 'O';
 			
-			if (x[posY - 1][posX + 1] == ' ' && x[posY][posX + 2] == ' '){
+			if (x[posY+1][posX+2] == ' ' && x[posY-1][posX+1] == ' ' ){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY - 1][posX - 2] == ' ' && x[posY][posX - 1] == ' '){
+			if (x[posY][posX - 2] == ' '){
 				cml = 1;
 			}else{ 	
 				cml = 0;
@@ -394,12 +404,12 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			}else{ 
 				cmr = 0;
 			}
-			if (x[posY + 1][posX - 1] == ' ' && x[posY][posX - 1] == ' ' && x[posY - 1][posX] == ' '){
+			if (x[posY+2][posX - 1] == ' ' && x[posY+1][posX - 1] == ' '){
 				cml = 1;
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 2][posX + 2] == ' ' && x[posY + 1][posX - 1] == ' ' && x[posY + 2][posX] == ' '){
+			if (x[posY+1][posX + 2] == ' ' && x[posY + 2][posX +2] == ' '){  ///sdsasdad
 				cr = 1;
 			}else{
 				cr = 0;
@@ -426,7 +436,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			x[posY + 1][posX] = 'O';
 			x[posY + 1][posX + 1] = 'O';
 		
-			if (x[posY + 1][posX + 1] == ' ' && x[posY][posX + 1] == ' '){
+			if ( x[posY+2][posX + 2] == ' '){
 				cmr = 1;
 			}else{ 
 				cmr = 0;
