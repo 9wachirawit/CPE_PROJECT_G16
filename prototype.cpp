@@ -982,7 +982,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY + 2][posX - 1] == ' ' &&  x[posY + 1][posX - 1] == ' '){
+			if (x[posY + 2][posX - 1] == ' ' &&  x[posY + 1][posX - 1] == ' ' && x[posY + 1][posX + 1] == ' '){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -1073,7 +1073,7 @@ void Tetris(char (&x)[25][100], int posX, int posY, int currentBlock, int rotate
 			}else{ 
 				cml = 0;
 			}
-			if (x[posY][posX + 1] == ' ' &&  x[posY + 1 ][posX + 1] == ' ' && x[posY + 1 ][posX - 1] == ' '){
+			if (x[posY + 1][posX - 1] == ' ' &&  x[posY + 2 ][posX - 1] == ' ' ){
 				cr = 1;
 			}else{
 				cr = 0;
@@ -1583,6 +1583,7 @@ void startgame(){
 
 void EVENT_monster(){
 	if((hp_monster*10) <= 0){
+		scoredb += 0.00500;
 		hp_monster = 0.1 * (rand()%10 + 1);
 		hp_player += 0.05;
 		monnumber = rand()%3;
